@@ -1,0 +1,22 @@
+.expenses-page {
+  padding-top: 24px;
+}
+
+.expense-summary {
+  border-left-color: var(--expense-color) !important;
+}
+
+.expense-text {
+  color: var(--expense-color);
+}
+
+.col-payment {
+  flex: 1;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .col-payment {
+    display: none; /* Hide payment method column on very small screens to save space */
+  }
+}

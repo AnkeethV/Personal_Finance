@@ -1,0 +1,65 @@
+.quick-add-fab {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  height: 56px;
+  padding: 0 24px;
+  border-radius: 28px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  z-index: 90;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.quick-add-fab:hover {
+  transform: scale(1.05);
+  background-color: var(--primary-hover);
+}
+
+.quick-add-modal {
+  max-width: 400px;
+}
+
+.type-toggle {
+  display: flex;
+  background-color: var(--bg-subtle);
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 24px;
+}
+
+.toggle-btn {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toggle-btn.active {
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-btn.active.expense {
+  color: var(--expense-color);
+}
+
+.toggle-btn.active.income {
+  color: var(--income-color);
+}
+
+.toggle-btn.active.investment {
+  color: #9C27B0;
+}

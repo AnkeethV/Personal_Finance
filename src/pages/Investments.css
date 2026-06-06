@@ -1,0 +1,11 @@
+.investments-page {
+  padding-top: 24px;
+}
+
+.investment-summary {
+  border-left-color: #9C27B0 !important; /* A distinct purple color for investments */
+}
+
+.investment-text {
+  color: #9C27B0;
+}

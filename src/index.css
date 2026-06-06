@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Sora:wght@400;600;700&display=swap');
+
+:root {
+  /* Light Mode (default) */
+  --bg-primary: #FAFAF8;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #F4F3EE;
+  --border: #E8E6DF;
+  --text-primary: #1A1A18;
+  --text-secondary: #6B6B5F;
+  --text-tertiary: #A09E94;
+  --accent-primary: #1C6B3A;
+  --accent-warm: #E8612A;
+  --accent-blue: #1E4FA8;
+  --accent-gold: #C4922A;
+  --income-color: #1C6B3A;
+  --expense-color: #E8612A;
+  --invest-color: #1E4FA8;
+  --success: #2E7D32;
+  --warning: #E65100;
+  --error: #C62828;
+  --info: #1565C0;
+
+  /* Font Stack */
+  --font-display: 'Sora', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Type Scale */
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-md: 17px;
+  --text-lg: 21px;
+  --text-xl: 28px;
+  --text-2xl: 36px;
+  --text-3xl: 48px;
+}
+
+.dark {
+  /* Dark Mode */
+  --bg-primary: #141412;
+  --bg-surface: #1E1E1C;
+  --bg-subtle: #262623;
+  --border: #333330;
+  --text-primary: #F0EFE8;
+  --text-secondary: #9E9C90;
+  --accent-primary: #4CAF72;
+  --accent-warm: #FF7043;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Basic utility classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  padding: 16px;
+}
+
+.input {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-family: var(--font-body);
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.btn {
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn-primary {
+  background-color: var(--accent-primary);
+  color: #fff;
+}
+
+.btn-secondary {
+  background-color: var(--bg-subtle);
+  color: var(--text-primary);
+}
