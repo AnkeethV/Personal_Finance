@@ -87,9 +87,11 @@ export default function QuickAdd() {
     e.preventDefault();
     if (!formData.amount || formData.amount <= 0) return;
 
+    const entryMonth = formData.date ? formData.date.substring(0, 7) : activeMonth;
+
     const entry = {
       id: crypto.randomUUID(),
-      month: activeMonth,
+      month: entryMonth,
       typeId: formData.typeId,
       amount: Math.round(parseFloat(formData.amount) * 100),
       date: formData.date,
