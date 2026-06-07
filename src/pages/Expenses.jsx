@@ -214,7 +214,7 @@ export default function Expenses() {
               style={{ 
                 width: `${Math.min(100, (totalExpense / (budget * 100)) * 100)}%`, 
                 height: '100%',
-                backgroundColor: totalExpense > budget * 100 ? 'var(--error)' : 'var(--primary)',
+                backgroundColor: 'var(--error)',
                 transition: 'width 0.5s ease-out, background-color 0.3s ease'
               }}
             ></div>
