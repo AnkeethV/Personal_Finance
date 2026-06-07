@@ -13,6 +13,7 @@ import './App.css';
 
 function App() {
   const [isDark, setIsDark] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     // Initialize local storage database
@@ -42,9 +43,17 @@ function App() {
 
   return (
     <div className="app-container">
-      <Sidebar />
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="sidebar-overlay" 
+          onClick={() => setIsSidebarOpen(false)}
+        ></div>
+      )}
+      
+      <Sidebar isOpen={isSidebarOpen} setIsOpen={setIsSidebarOpen} />
       <main className="main-content">
-        <TopBar toggleTheme={toggleTheme} isDark={isDark} />
+        <TopBar toggleTheme={toggleTheme} isDark={isDark} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
         <div className="page-content">
           <Routes>
             <Route path="/" element={<Dashboard />} />

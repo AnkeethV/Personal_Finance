@@ -10,6 +10,16 @@
   z-index: 10;
 }
 
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hamburger-btn {
+  display: none;
+}
+
 .month-selector {
   display: flex;
   align-items: center;

@@ -11,7 +11,7 @@ import {
 import QuickAdd from './QuickAdd';
 import './Sidebar.css';
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, setIsOpen }) {
   const location = useLocation();
 
   const navItems = [
@@ -24,7 +24,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${isOpen ? 'open' : ''}`}>
       <div className="sidebar-header">
         <h2>Personal Finance</h2>
       </div>
@@ -34,6 +34,7 @@ export default function Sidebar() {
             key={item.path} 
             to={item.path} 
             className={`nav-item ${location.pathname === item.path ? 'active' : ''}`}
+            onClick={() => setIsOpen && setIsOpen(false)}
           >
             <item.icon size={24} />
             <span>{item.label}</span>
