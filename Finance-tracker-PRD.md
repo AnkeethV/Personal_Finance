@@ -29,7 +29,7 @@
 
 ## 1. Executive Summary
 
-**Paisa Tracker** is a zero-server, privacy-first personal finance web application built entirely in the browser. No account creation. No data leaves the device. It helps Indian salaried and self-employed individuals:
+**Finance Tracker** is a zero-server, privacy-first personal finance web application built entirely in the browser. No account creation. No data leaves the device. It helps Indian salaried and self-employed individuals:
 
 - Track monthly income from all sources (salary, freelance, rental, dividends, interest)
 - Categorise and monitor day-to-day expenses with default Indian spending categories plus user-defined custom ones
