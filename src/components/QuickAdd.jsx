@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Plus, X, PencilSimple, PlusCircle, Trash } from '@phosphor-icons/react';
 import { storage } from '../utils/storage';
 import { useAppContext } from '../context/AppContext';
+import { evaluateMath } from '../utils/math';
 import './QuickAdd.css';
 
 export default function QuickAdd() {
@@ -146,7 +147,17 @@ export default function QuickAdd() {
             <form onSubmit={handleSubmit} className="modal-form">
               <div className="form-group">
                 <label>Amount (₹) *</label>
-                <input type="number" className="input" name="amount" value={formData.amount} onChange={handleInputChange} min="1" step="any" required autoFocus />
+                <input 
+                  type="text" 
+                  inputMode="decimal"
+                  className="input" 
+                  name="amount" 
+                  value={formData.amount} 
+                  onChange={handleInputChange} 
+                  onBlur={(e) => setFormData(prev => ({ ...prev, amount: evaluateMath(e.target.value) }))}
+                  required 
+                  autoFocus 
+                />
               </div>
               
               <div className="form-group">

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { storage } from '../utils/storage';
+import { evaluateMath } from '../utils/math';
 import { Plus, Trash, X, PencilSimple } from '@phosphor-icons/react';
 import './Income.css';
 
@@ -276,18 +277,43 @@ export default function Income() {
               
               <div className="form-group">
                 <label>{formData.typeId === 'inc_salary' ? 'Gross Amount (₹) *' : 'Amount (₹) *'}</label>
-                <input type="number" className="input" name="amount" value={formData.amount} onChange={handleInputChange} min="1" step="any" required />
+                <input 
+                  type="text" 
+                  inputMode="decimal"
+                  className="input" 
+                  name="amount" 
+                  value={formData.amount} 
+                  onChange={handleInputChange} 
+                  onBlur={(e) => setFormData(prev => ({ ...prev, amount: evaluateMath(e.target.value) }))}
+                  required 
+                />
               </div>
               
               {formData.typeId === 'inc_salary' && (
                 <>
                   <div className="form-group">
                     <label>Provident Fund (₹)</label>
-                    <input type="number" className="input" name="providentFund" value={formData.providentFund} onChange={handleInputChange} min="0" step="any" />
+                    <input 
+                      type="text" 
+                      inputMode="decimal"
+                      className="input" 
+                      name="providentFund" 
+                      value={formData.providentFund} 
+                      onChange={handleInputChange} 
+                      onBlur={(e) => setFormData(prev => ({ ...prev, providentFund: evaluateMath(e.target.value) }))}
+                    />
                   </div>
                   <div className="form-group">
                     <label>Professional Tax (₹)</label>
-                    <input type="number" className="input" name="professionalTax" value={formData.professionalTax} onChange={handleInputChange} min="0" step="any" />
+                    <input 
+                      type="text" 
+                      inputMode="decimal"
+                      className="input" 
+                      name="professionalTax" 
+                      value={formData.professionalTax} 
+                      onChange={handleInputChange} 
+                      onBlur={(e) => setFormData(prev => ({ ...prev, professionalTax: evaluateMath(e.target.value) }))}
+                    />
                   </div>
                   
                   {formData.amount && (
