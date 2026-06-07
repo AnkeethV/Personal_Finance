@@ -303,7 +303,7 @@ export default function Expenses() {
               
               <div className="form-group">
                 <label>Date *</label>
-                <input type="date" className="input" name="date" value={formData.date} onChange={handleInputChange} required />
+                <input type="date" className="input" name="date" value={formData.date} onChange={handleInputChange} max={new Date().toISOString().split('T')[0]} required />
               </div>
               
               <div className="form-group">
