@@ -1,10 +1,12 @@
 import { CaretLeft, CaretRight, Moon, Sun, ShieldCheck } from '@phosphor-icons/react';
+import { useLocation } from 'react-router-dom';
 import { storage } from '../utils/storage';
 import { useAppContext } from '../context/AppContext';
 import './TopBar.css';
 
 export default function TopBar({ toggleTheme, isDark }) {
   const { activeMonth, setActiveMonth } = useAppContext();
+  const location = useLocation();
 
   // Helper to display nicely
   const displayMonth = new Date(activeMonth + '-01').toLocaleDateString('en-IN', {
@@ -26,7 +28,7 @@ export default function TopBar({ toggleTheme, isDark }) {
 
   return (
     <div className="topbar">
-      <div className="month-selector">
+      <div className="month-selector" style={{ visibility: location.pathname === '/' ? 'hidden' : 'visible' }}>
         <button className="icon-btn" onClick={handlePrevMonth}><CaretLeft size={20} /></button>
         <span className="current-month font-display">{displayMonth}</span>
         <button className="icon-btn" onClick={handleNextMonth}><CaretRight size={20} /></button>

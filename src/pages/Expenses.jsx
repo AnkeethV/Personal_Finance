@@ -201,7 +201,7 @@ export default function Expenses() {
             <span style={{ fontWeight: '500', color: 'var(--text-secondary)' }}>
               Monthly Budget: <span className="font-mono">{formatCurrency(budget * 100)}</span>
             </span>
-            <span style={{ fontWeight: '600', color: totalExpense > budget * 100 ? 'var(--error)' : 'var(--text-primary)' }}>
+            <span style={{ fontWeight: '600', color: 'var(--error)' }}>
               {totalExpense > budget * 100 
                 ? `${Math.round(((totalExpense - budget * 100) / (budget * 100)) * 100)}% Exceeded`
                 : `${Math.round((totalExpense / (budget * 100)) * 100)}% Used`
