@@ -9,9 +9,9 @@ export default function QuickAdd() {
   const { activeMonth } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
   const [type, setType] = useState('expense'); // 'expense' or 'investment'
-  
+
   const categories = storage.getCategories();
-  
+
   const [formData, setFormData] = useState({
     typeId: '',
     amount: '',
@@ -43,12 +43,12 @@ export default function QuickAdd() {
     const list = categories[type] || [];
     const cat = list.find(c => c.id === formData.typeId);
     if (!cat) return;
-    
+
     const newName = window.prompt("Rename Category:", cat.name);
     if (newName && newName.trim() !== '') {
       storage.renameCategory(type, formData.typeId, newName.trim());
       // Reload is required because QuickAdd reads storage directly on render
-      window.location.reload(); 
+      window.location.reload();
     }
   };
 
@@ -128,15 +128,15 @@ export default function QuickAdd() {
                 <X size={24} />
               </button>
             </div>
-            
+
             <div className="type-toggle">
-              <button 
+              <button
                 className={`toggle-btn ${type === 'expense' ? 'active expense' : ''}`}
                 onClick={() => handleTypeChange('expense')}
               >
                 Expense
               </button>
-              <button 
+              <button
                 className={`toggle-btn ${type === 'investment' ? 'active investment' : ''}`}
                 onClick={() => handleTypeChange('investment')}
               >
@@ -147,19 +147,19 @@ export default function QuickAdd() {
             <form onSubmit={handleSubmit} className="modal-form">
               <div className="form-group">
                 <label>Amount (₹) *</label>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   inputMode="decimal"
-                  className="input" 
-                  name="amount" 
-                  value={formData.amount} 
-                  onChange={handleInputChange} 
+                  className="input"
+                  name="amount"
+                  value={formData.amount}
+                  onChange={handleInputChange}
                   onBlur={(e) => setFormData(prev => ({ ...prev, amount: evaluateMath(e.target.value) }))}
-                  required 
-                  autoFocus 
+                  required
+                  autoFocus
                 />
               </div>
-              
+
               <div className="form-group">
                 <label style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <span>Category *</span>
@@ -181,17 +181,17 @@ export default function QuickAdd() {
                   ))}
                 </select>
               </div>
-              
+
               <div className="form-group">
                 <label>Date *</label>
                 <input type="date" className="input" name="date" value={formData.date} onChange={handleInputChange} max={new Date().toISOString().split('T')[0]} required />
               </div>
-              
+
               <div className="form-group">
                 <label>Note</label>
                 <input type="text" className="input" name="description" value={formData.description} onChange={handleInputChange} maxLength="100" />
               </div>
-              
+
               <button type="submit" className="btn btn-primary" style={{ marginTop: '16px' }}>Save {type === 'expense' ? 'Expense' : 'Investment'}</button>
             </form>
           </div>

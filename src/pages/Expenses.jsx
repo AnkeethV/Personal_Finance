@@ -130,10 +130,17 @@ export default function Expenses() {
     setIsModalOpen(true);
   };
 
+  const isDateInvalid = formData.date && formData.date.substring(0, 7) !== activeMonth;
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.amount || formData.amount <= 0) {
       alert("Amount must be greater than zero");
+      return;
+    }
+
+    if (isDateInvalid) {
+      alert("Please select a date within the currently viewed month.");
       return;
     }
 
@@ -313,7 +320,17 @@ export default function Expenses() {
               
               <div className="form-group">
                 <label>Date *</label>
-                <input type="date" className="input" name="date" value={formData.date} onChange={handleInputChange} max={new Date().toISOString().split('T')[0]} required />
+                <input 
+                  type="date" 
+                  className="input" 
+                  style={isDateInvalid ? { borderColor: 'var(--error)', backgroundColor: 'rgba(244, 67, 54, 0.05)' } : {}}
+                  name="date" 
+                  value={formData.date} 
+                  onChange={handleInputChange} 
+                  max={new Date().toISOString().split('T')[0]} 
+                  required 
+                />
+                {isDateInvalid && <span style={{ color: 'var(--error)', fontSize: '12px', marginTop: '4px', display: 'block' }}>Date must be in the active month.</span>}
               </div>
               
               <div className="form-group">
