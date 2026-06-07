@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { storage } from '../utils/storage';
-import { Wallet, Receipt, TrendUp, Plus, ChartLineUp } from '@phosphor-icons/react';
+import { Wallet, Receipt, TrendUp, Plus, ChartLineUp, Bank } from '@phosphor-icons/react';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
 
 export default function Dashboard() {
   const { activeMonth } = useAppContext();
-  const [metrics, setMetrics] = useState({ income: 0, expense: 0, savings: 0, invest: 0 });
+  const [metrics, setMetrics] = useState({ income: 0, expense: 0, savings: 0, invest: 0, pf: 0 });
   const [categoryBreakdown, setCategoryBreakdown] = useState([]);
   const [investmentBreakdown, setInvestmentBreakdown] = useState([]);
   const [paymentBreakdown, setPaymentBreakdown] = useState([]);
@@ -23,9 +23,10 @@ export default function Dashboard() {
     const totalIncome = incomeData.reduce((sum, item) => sum + item.amount, 0);
     const totalExpense = expenseData.reduce((sum, item) => sum + item.amount, 0);
     const totalInvest = investmentData.reduce((sum, item) => sum + item.amount, 0);
+    const totalPf = incomeData.reduce((sum, item) => sum + (item.providentFund || 0), 0);
     const netSavings = totalIncome - totalExpense;
 
-    setMetrics({ income: totalIncome, expense: totalExpense, savings: netSavings, invest: totalInvest });
+    setMetrics({ income: totalIncome, expense: totalExpense, savings: netSavings, invest: totalInvest, pf: totalPf });
 
     // Calculate Category Breakdown for Expenses
     const breakdown = {};
@@ -137,6 +138,16 @@ export default function Dashboard() {
           </div>
           <div className="metric-value font-mono">
             {formatCurrency(metrics.invest)}
+          </div>
+        </div>
+
+        <div className="metric-card metric-pf">
+          <div className="metric-header">
+            <span className="metric-icon"><Bank size={24} weight="duotone" /></span>
+            <span className="metric-title">Provident Fund</span>
+          </div>
+          <div className="metric-value font-mono">
+            {formatCurrency(metrics.pf)}
           </div>
         </div>
       </div>

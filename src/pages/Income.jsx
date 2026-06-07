@@ -18,7 +18,9 @@ export default function Income() {
     date: new Date().toISOString().split('T')[0],
     description: '',
     payer: '',
-    tdsDeducted: ''
+    tdsDeducted: '',
+    providentFund: '',
+    professionalTax: ''
   });
 
   useEffect(() => {
@@ -91,7 +93,9 @@ export default function Income() {
       date: new Date().toISOString().split('T')[0],
       description: '',
       payer: '',
-      tdsDeducted: ''
+      tdsDeducted: '',
+      providentFund: '',
+      professionalTax: ''
     });
     setEditingId(null);
   };
@@ -109,11 +113,13 @@ export default function Income() {
   const handleEdit = (entry) => {
     setFormData({
       typeId: entry.typeId,
-      amount: (entry.amount / 100).toString(), // convert back to rupees
+      amount: entry.grossAmount ? (entry.grossAmount / 100).toString() : (entry.amount / 100).toString(), // show gross amount in input
       date: entry.date,
       description: entry.description || '',
       payer: entry.payer || '',
-      tdsDeducted: entry.tdsDeducted ? (entry.tdsDeducted / 100).toString() : ''
+      tdsDeducted: entry.tdsDeducted ? (entry.tdsDeducted / 100).toString() : '',
+      providentFund: entry.providentFund ? (entry.providentFund / 100).toString() : '',
+      professionalTax: entry.professionalTax ? (entry.professionalTax / 100).toString() : ''
     });
     setEditingId(entry.id);
     setIsModalOpen(true);
@@ -126,15 +132,31 @@ export default function Income() {
       return;
     }
 
+    let parsedGross = parseFloat(formData.amount);
+    let pf = formData.providentFund ? parseFloat(formData.providentFund) : 0;
+    let pt = formData.professionalTax ? parseFloat(formData.professionalTax) : 0;
+    
+    // Only apply deductions if category is salary, to be safe
+    const isSalary = formData.typeId === 'inc_salary';
+    if (!isSalary) {
+      pf = 0;
+      pt = 0;
+    }
+    
+    let netAmount = parsedGross - pf - pt;
+
     const entry = {
       id: editingId || crypto.randomUUID(),
       month: activeMonth,
       typeId: formData.typeId,
-      amount: Math.round(parseFloat(formData.amount) * 100), // convert to paise
+      amount: Math.round(netAmount * 100), // convert to paise
+      grossAmount: Math.round(parsedGross * 100), // convert to paise
       date: formData.date,
       description: formData.description,
       payer: formData.payer,
       tdsDeducted: formData.tdsDeducted ? Math.round(parseFloat(formData.tdsDeducted) * 100) : 0,
+      providentFund: Math.round(pf * 100),
+      professionalTax: Math.round(pt * 100),
       isRecurring: false
     };
 
@@ -253,9 +275,35 @@ export default function Income() {
               </div>
               
               <div className="form-group">
-                <label>Amount (₹) *</label>
+                <label>{formData.typeId === 'inc_salary' ? 'Gross Amount (₹) *' : 'Amount (₹) *'}</label>
                 <input type="number" className="input" name="amount" value={formData.amount} onChange={handleInputChange} min="1" step="any" required />
               </div>
+              
+              {formData.typeId === 'inc_salary' && (
+                <>
+                  <div className="form-group">
+                    <label>Provident Fund (₹)</label>
+                    <input type="number" className="input" name="providentFund" value={formData.providentFund} onChange={handleInputChange} min="0" step="any" />
+                  </div>
+                  <div className="form-group">
+                    <label>Professional Tax (₹)</label>
+                    <input type="number" className="input" name="professionalTax" value={formData.professionalTax} onChange={handleInputChange} min="0" step="any" />
+                  </div>
+                  
+                  {formData.amount && (
+                    <div className="form-group" style={{ padding: '12px', backgroundColor: 'var(--bg-subtle)', borderRadius: '8px', marginTop: '8px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ color: 'var(--text-secondary)' }}>Net Monthly Total:</span>
+                        <span className="font-mono" style={{ fontSize: '1.2em', fontWeight: 'bold', color: 'var(--income-color)' }}>
+                          {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(
+                            Math.max(0, (parseFloat(formData.amount || 0) - parseFloat(formData.providentFund || 0) - parseFloat(formData.professionalTax || 0)))
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
               
               <div className="form-group">
                 <label>Date *</label>

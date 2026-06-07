@@ -7,7 +7,7 @@ import './QuickAdd.css';
 export default function QuickAdd() {
   const { activeMonth } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
-  const [type, setType] = useState('expense'); // 'expense' or 'income'
+  const [type, setType] = useState('expense'); // 'expense' or 'investment'
   
   const categories = storage.getCategories();
   
@@ -100,10 +100,6 @@ export default function QuickAdd() {
 
     if (type === 'expense') {
       storage.saveExpenseEntry(entry);
-    } else if (type === 'income') {
-      entry.payer = '';
-      entry.tdsDeducted = 0;
-      storage.saveIncomeEntry(entry);
     } else if (type === 'investment') {
       entry.platform = '';
       storage.saveInvestmentEntry(entry);
@@ -136,12 +132,6 @@ export default function QuickAdd() {
                 onClick={() => handleTypeChange('expense')}
               >
                 Expense
-              </button>
-              <button 
-                className={`toggle-btn ${type === 'income' ? 'active income' : ''}`}
-                onClick={() => handleTypeChange('income')}
-              >
-                Income
               </button>
               <button 
                 className={`toggle-btn ${type === 'investment' ? 'active investment' : ''}`}
@@ -189,7 +179,7 @@ export default function QuickAdd() {
                 <input type="text" className="input" name="description" value={formData.description} onChange={handleInputChange} maxLength="100" />
               </div>
               
-              <button type="submit" className="btn btn-primary" style={{ marginTop: '16px' }}>Save {type === 'expense' ? 'Expense' : type === 'income' ? 'Income' : 'Investment'}</button>
+              <button type="submit" className="btn btn-primary" style={{ marginTop: '16px' }}>Save {type === 'expense' ? 'Expense' : 'Investment'}</button>
             </form>
           </div>
         </div>
