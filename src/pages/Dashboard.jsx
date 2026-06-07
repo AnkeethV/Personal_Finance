@@ -96,11 +96,7 @@ export default function Dashboard() {
 
   return (
     <div className="container dashboard-page">
-      <div className="page-header">
-        <h1 className="font-display">Finance Status</h1>
-      </div>
-
-      <div className="metrics-grid">
+      <div className="metrics-grid" style={{ marginTop: '24px' }}>
         <div className="metric-card metric-savings">
           <div className="metric-header">
             <span className="metric-icon"><TrendUp size={24} weight="duotone" /></span>

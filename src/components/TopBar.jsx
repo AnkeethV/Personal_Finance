@@ -28,11 +28,15 @@ export default function TopBar({ toggleTheme, isDark }) {
 
   return (
     <div className="topbar">
-      <div className="month-selector" style={{ visibility: location.pathname === '/' ? 'hidden' : 'visible' }}>
-        <button className="icon-btn" onClick={handlePrevMonth}><CaretLeft size={20} /></button>
-        <span className="current-month font-display">{displayMonth}</span>
-        <button className="icon-btn" onClick={handleNextMonth}><CaretRight size={20} /></button>
-      </div>
+      {location.pathname === '/' ? (
+        <h1 className="font-display" style={{ margin: 0, fontSize: 'var(--text-xl)', color: 'var(--text-primary)' }}>Finance Status</h1>
+      ) : (
+        <div className="month-selector">
+          <button className="icon-btn" onClick={handlePrevMonth}><CaretLeft size={20} /></button>
+          <span className="current-month font-display">{displayMonth}</span>
+          <button className="icon-btn" onClick={handleNextMonth}><CaretRight size={20} /></button>
+        </div>
+      )}
       <div className="topbar-actions">
         <div className="privacy-badge">
           <ShieldCheck size={20} weight="duotone" />
