@@ -32,8 +32,10 @@ export default function TopBar({ toggleTheme, isDark, toggleSidebar }) {
         <button className="icon-btn hamburger-btn" onClick={toggleSidebar}>
           <List size={24} />
         </button>
-      {location.pathname === '/' ? (
-        <h1 className="font-display" style={{ margin: 0, fontSize: 'var(--text-xl)', color: 'var(--text-primary)' }}>Finance Status</h1>
+      {location.pathname === '/' || location.pathname === '/settings' ? (
+        <h1 className="font-display" style={{ margin: 0, fontSize: 'var(--text-xl)', color: 'var(--text-primary)' }}>
+          {location.pathname === '/' ? 'Finance Status' : 'Settings'}
+        </h1>
       ) : (
         <div className="month-selector">
           <button className="icon-btn" onClick={handlePrevMonth}><CaretLeft size={20} /></button>

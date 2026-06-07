@@ -65,9 +65,7 @@ export default function Settings() {
   if (!profile || !settings) return <div>Loading...</div>;
 
   return (
-    <div className="container">
-      <h1 className="font-display" style={{ marginTop: '24px', marginBottom: '16px' }}>Settings</h1>
-      
+    <div className="container" style={{ paddingTop: '24px' }}>
       <div className="settings-grid">
         <div className="card">
           <h2 className="font-display">Profile</h2>
