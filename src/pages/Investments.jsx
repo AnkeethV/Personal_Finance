@@ -18,7 +18,8 @@ export default function Investments() {
     amount: '',
     date: new Date().toISOString().split('T')[0],
     platform: '',
-    notes: ''
+    notes: '',
+    accountSource: 'expense'
   });
 
   useEffect(() => {
@@ -88,7 +89,8 @@ export default function Investments() {
       amount: '',
       date: new Date().toISOString().split('T')[0],
       platform: '',
-      notes: ''
+      notes: '',
+      accountSource: 'expense'
     });
     setEditingId(null);
   };
@@ -109,7 +111,8 @@ export default function Investments() {
       amount: (entry.amount / 100).toString(),
       date: entry.date,
       platform: entry.platform || '',
-      notes: entry.notes || ''
+      notes: entry.notes || '',
+      accountSource: entry.accountSource || 'expense'
     });
     setEditingId(entry.id);
     setIsModalOpen(true);
@@ -136,7 +139,8 @@ export default function Investments() {
       amount: Math.round(parseFloat(formData.amount) * 100),
       date: formData.date,
       platform: formData.platform,
-      notes: formData.notes
+      notes: formData.notes,
+      accountSource: formData.accountSource
     };
 
     storage.saveInvestmentEntry(entry);
@@ -198,6 +202,9 @@ export default function Investments() {
                 <div className="list-row" key={entry.id}>
                   <div className="col-source">
                     <span>{cat.name}</span>
+                    <span style={{ display: 'block', fontSize: '10px', color: 'var(--text-secondary)', textTransform: 'uppercase', marginTop: '2px' }}>
+                      {entry.accountSource === 'savings' ? 'Savings Acct' : 'Expense Acct'}
+                    </span>
                   </div>
                   <div className="col-date">{new Date(entry.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}</div>
                   <div className="col-notes">
@@ -296,6 +303,14 @@ export default function Investments() {
               <div className="form-group">
                 <label>Notes</label>
                 <input type="text" className="input" name="notes" value={formData.notes} onChange={handleInputChange} maxLength="200" placeholder="e.g., AAPL stock, SIP" />
+              </div>
+              
+              <div className="form-group">
+                <label>Funded From Account</label>
+                <select className="input" name="accountSource" value={formData.accountSource} onChange={handleInputChange}>
+                  <option value="expense">Expense Account</option>
+                  <option value="savings">Savings Account</option>
+                </select>
               </div>
               
               <div className="modal-actions">

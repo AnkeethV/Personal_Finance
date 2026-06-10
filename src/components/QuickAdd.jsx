@@ -16,7 +16,8 @@ export default function QuickAdd() {
     typeId: '',
     amount: '',
     date: new Date().toISOString().split('T')[0],
-    description: ''
+    description: '',
+    accountSource: 'expense'
   });
 
   const handleOpenModal = () => {
@@ -29,7 +30,8 @@ export default function QuickAdd() {
         typeId: defaultId,
         amount: '',
         date: new Date().toISOString().split('T')[0],
-        description: ''
+        description: '',
+        accountSource: 'expense'
       });
       setIsOpen(true);
     } catch (err) {
@@ -98,7 +100,8 @@ export default function QuickAdd() {
       date: formData.date,
       description: formData.description,
       paymentMethod: 'UPI',
-      notes: ''
+      notes: '',
+      accountSource: formData.accountSource
     };
 
     if (type === 'expense') {
@@ -185,6 +188,14 @@ export default function QuickAdd() {
               <div className="form-group">
                 <label>Date *</label>
                 <input type="date" className="input" name="date" value={formData.date} onChange={handleInputChange} max={new Date().toISOString().split('T')[0]} required />
+              </div>
+
+              <div className="form-group">
+                <label>Funded From Account</label>
+                <select className="input" name="accountSource" value={formData.accountSource} onChange={handleInputChange}>
+                  <option value="expense">Expense Account</option>
+                  <option value="savings">Savings Account</option>
+                </select>
               </div>
 
               <div className="form-group">

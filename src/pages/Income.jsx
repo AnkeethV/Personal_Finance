@@ -21,7 +21,10 @@ export default function Income() {
     payer: '',
     tdsDeducted: '',
     providentFund: '',
-    professionalTax: ''
+    professionalTax: '',
+    savingsSplit: '',
+    expenseSplit: '',
+    accountTarget: 'savings'
   });
 
   useEffect(() => {
@@ -96,7 +99,10 @@ export default function Income() {
       payer: '',
       tdsDeducted: '',
       providentFund: '',
-      professionalTax: ''
+      professionalTax: '',
+      savingsSplit: '',
+      expenseSplit: '',
+      accountTarget: 'savings'
     });
     setEditingId(null);
   };
@@ -120,7 +126,10 @@ export default function Income() {
       payer: entry.payer || '',
       tdsDeducted: entry.tdsDeducted ? (entry.tdsDeducted / 100).toString() : '',
       providentFund: entry.providentFund ? (entry.providentFund / 100).toString() : '',
-      professionalTax: entry.professionalTax ? (entry.professionalTax / 100).toString() : ''
+      professionalTax: entry.professionalTax ? (entry.professionalTax / 100).toString() : '',
+      savingsSplit: entry.savingsSplit ? (entry.savingsSplit / 100).toString() : '',
+      expenseSplit: entry.expenseSplit ? (entry.expenseSplit / 100).toString() : '',
+      accountTarget: entry.accountTarget || 'savings'
     });
     setEditingId(entry.id);
     setIsModalOpen(true);
@@ -152,6 +161,13 @@ export default function Income() {
     }
     
     let netAmount = parsedGross - pf - pt;
+    let sSplit = isSalary && formData.savingsSplit ? parseFloat(formData.savingsSplit) : (isSalary ? netAmount : 0);
+    let eSplit = isSalary && formData.expenseSplit ? parseFloat(formData.expenseSplit) : 0;
+
+    if (isSalary && Math.abs(sSplit + eSplit - netAmount) > 0.01) {
+      alert("Savings Split and Expense Split must equal the Net Amount.");
+      return;
+    }
 
     const entry = {
       id: editingId || crypto.randomUUID(),
@@ -165,7 +181,10 @@ export default function Income() {
       tdsDeducted: formData.tdsDeducted ? Math.round(parseFloat(formData.tdsDeducted) * 100) : 0,
       providentFund: Math.round(pf * 100),
       professionalTax: Math.round(pt * 100),
-      isRecurring: false
+      isRecurring: false,
+      savingsSplit: isSalary ? Math.round(sSplit * 100) : 0,
+      expenseSplit: isSalary ? Math.round(eSplit * 100) : 0,
+      accountTarget: isSalary ? null : formData.accountTarget
     };
 
     storage.saveIncomeEntry(entry);
@@ -180,10 +199,46 @@ export default function Income() {
     }
   };
 
-  const totalGrossIncome = entries.reduce((sum, entry) => sum + entry.amount, 0);
+  const expenseData = storage.getExpenseEntries(activeMonth);
   const investmentData = storage.getInvestmentEntries(activeMonth);
-  const totalInvestments = investmentData.reduce((sum, item) => sum + item.amount, 0);
-  const totalIncome = totalGrossIncome - totalInvestments;
+
+  let totalSavingsIncome = 0;
+  let totalExpenseIncome = 0;
+
+  entries.forEach(entry => {
+    if (entry.typeId === 'inc_salary') {
+      totalSavingsIncome += (entry.savingsSplit !== undefined ? entry.savingsSplit : entry.amount);
+      totalExpenseIncome += (entry.expenseSplit || 0);
+    } else if (entry.accountTarget === 'expense') {
+      totalExpenseIncome += entry.amount;
+    } else {
+      totalSavingsIncome += entry.amount;
+    }
+  });
+
+  let totalSavingsExpenses = 0;
+  let totalExpenseExpenses = 0;
+  expenseData.forEach(entry => {
+    if (entry.accountSource === 'savings') {
+      totalSavingsExpenses += entry.amount;
+    } else {
+      totalExpenseExpenses += entry.amount;
+    }
+  });
+
+  let totalSavingsInvestments = 0;
+  let totalExpenseInvestments = 0;
+  investmentData.forEach(entry => {
+    if (entry.accountSource === 'savings') {
+      totalSavingsInvestments += entry.amount;
+    } else {
+      totalExpenseInvestments += entry.amount;
+    }
+  });
+
+  const savingsBalance = totalSavingsIncome - totalSavingsExpenses - totalSavingsInvestments;
+  const expenseBalance = totalExpenseIncome - totalExpenseExpenses - totalExpenseInvestments;
+  const monthlyTotal = savingsBalance + expenseBalance;
 
   const formatCurrency = (paise) => {
     return new Intl.NumberFormat('en-IN', {
@@ -206,9 +261,19 @@ export default function Income() {
         </button>
       </div>
 
-      <div className="card summary-card">
-        <div className="summary-label">Monthly Total</div>
-        <div className="summary-amount font-mono">{formatCurrency(totalIncome)}</div>
+      <div className="card summary-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div className="summary-label">Monthly Total (Available)</div>
+        <div className="summary-amount font-mono" style={{ marginBottom: '12px' }}>{formatCurrency(monthlyTotal)}</div>
+        <div style={{ display: 'flex', gap: '32px', fontSize: '0.9em' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <span style={{ color: 'var(--text-secondary)' }}>Savings Account</span>
+            <span className="font-mono" style={{ color: 'var(--income-color)', fontWeight: '600' }}>{formatCurrency(savingsBalance)}</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <span style={{ color: 'var(--text-secondary)' }}>Expense Account</span>
+            <span className="font-mono" style={{ color: 'var(--error)', fontWeight: '600' }}>{formatCurrency(expenseBalance)}</span>
+          </div>
+        </div>
       </div>
 
       <div className="card list-card">
@@ -328,7 +393,7 @@ export default function Income() {
                   
                   {formData.amount && (
                     <div className="form-group" style={{ padding: '12px', backgroundColor: 'var(--bg-subtle)', borderRadius: '8px', marginTop: '8px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                         <span style={{ color: 'var(--text-secondary)' }}>Net Monthly Total:</span>
                         <span className="font-mono" style={{ fontSize: '1.2em', fontWeight: 'bold', color: 'var(--income-color)' }}>
                           {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(
@@ -336,9 +401,63 @@ export default function Income() {
                           )}
                         </span>
                       </div>
+                      
+                      <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
+                        <label style={{ fontSize: '13px', marginBottom: '8px' }}>Split Net Amount Between Accounts</label>
+                        <div style={{ display: 'flex', gap: '12px' }}>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Savings Acct (₹)</label>
+                            <input 
+                              type="number" 
+                              className="input" 
+                              name="savingsSplit" 
+                              value={formData.savingsSplit} 
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                const net = Math.max(0, (parseFloat(formData.amount || 0) - parseFloat(formData.providentFund || 0) - parseFloat(formData.professionalTax || 0)));
+                                setFormData(prev => ({ 
+                                  ...prev, 
+                                  savingsSplit: val,
+                                  expenseSplit: val ? (net - parseFloat(val)).toString() : ''
+                                }));
+                              }}
+                              step="any"
+                            />
+                          </div>
+                          <div style={{ flex: 1 }}>
+                            <label style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Expense Acct (₹)</label>
+                            <input 
+                              type="number" 
+                              className="input" 
+                              name="expenseSplit" 
+                              value={formData.expenseSplit} 
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                const net = Math.max(0, (parseFloat(formData.amount || 0) - parseFloat(formData.providentFund || 0) - parseFloat(formData.professionalTax || 0)));
+                                setFormData(prev => ({ 
+                                  ...prev, 
+                                  expenseSplit: val,
+                                  savingsSplit: val ? (net - parseFloat(val)).toString() : ''
+                                }));
+                              }}
+                              step="any"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </>
+              )}
+
+              {formData.typeId !== 'inc_salary' && (
+                <div className="form-group">
+                  <label>Credit To Account</label>
+                  <select className="input" name="accountTarget" value={formData.accountTarget} onChange={handleInputChange}>
+                    <option value="savings">Savings Account</option>
+                    <option value="expense">Expense Account</option>
+                  </select>
+                </div>
               )}
               
               <div className="form-group">

@@ -21,7 +21,8 @@ export default function Expenses() {
     date: new Date().toISOString().split('T')[0],
     description: '', // Merchant/Description
     paymentMethod: 'UPI',
-    notes: ''
+    notes: '',
+    accountSource: 'expense'
   });
 
   useEffect(() => {
@@ -59,7 +60,8 @@ export default function Expenses() {
       date: new Date().toISOString().split('T')[0],
       description: '',
       paymentMethod: 'UPI',
-      notes: ''
+      notes: '',
+      accountSource: 'expense'
     });
     setEditingId(null);
   };
@@ -124,7 +126,8 @@ export default function Expenses() {
       date: entry.date,
       description: entry.description || '',
       paymentMethod: entry.paymentMethod || 'UPI',
-      notes: entry.notes || ''
+      notes: entry.notes || '',
+      accountSource: entry.accountSource || 'expense'
     });
     setEditingId(entry.id);
     setIsModalOpen(true);
@@ -152,7 +155,8 @@ export default function Expenses() {
       date: formData.date,
       description: formData.description,
       paymentMethod: formData.paymentMethod,
-      notes: formData.notes
+      notes: formData.notes,
+      accountSource: formData.accountSource
     };
 
     storage.saveExpenseEntry(entry);
@@ -246,6 +250,9 @@ export default function Expenses() {
                 <div className="list-row" key={entry.id}>
                   <div className="col-source">
                     <span>{cat.name}</span>
+                    <span style={{ display: 'block', fontSize: '10px', color: 'var(--text-secondary)', textTransform: 'uppercase', marginTop: '2px' }}>
+                      {entry.accountSource === 'savings' ? 'Savings Acct' : 'Expense Acct'}
+                    </span>
                   </div>
                   <div className="col-date">{new Date(entry.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}</div>
                   <div className="col-notes">
@@ -343,13 +350,19 @@ export default function Expenses() {
               
               <div className="form-group">
                 <label>Payment Method</label>
-                <select className="input" name="paymentMethod" value={formData.paymentMethod} onChange={handleInputChange}>
-                  <option value="UPI">UPI</option>
-                  <option value="Credit Card">Credit Card</option>
-                  <option value="Debit Card">Debit Card</option>
-                  <option value="Cash">Cash</option>
-                  <option value="Net Banking">Net Banking</option>
-                </select>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <select className="input" name="paymentMethod" value={formData.paymentMethod} onChange={handleInputChange} style={{ flex: 1 }}>
+                    <option value="UPI">UPI</option>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Debit Card">Debit Card</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Net Banking">Net Banking</option>
+                  </select>
+                  <select className="input" name="accountSource" value={formData.accountSource} onChange={handleInputChange} style={{ flex: 1 }}>
+                    <option value="expense">Expense Account</option>
+                    <option value="savings">Savings Account</option>
+                  </select>
+                </div>
               </div>
 
               <div className="form-group">
