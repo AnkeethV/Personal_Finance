@@ -180,7 +180,10 @@ export default function Income() {
     }
   };
 
-  const totalIncome = entries.reduce((sum, entry) => sum + entry.amount, 0);
+  const totalGrossIncome = entries.reduce((sum, entry) => sum + entry.amount, 0);
+  const investmentData = storage.getInvestmentEntries(activeMonth);
+  const totalInvestments = investmentData.reduce((sum, item) => sum + item.amount, 0);
+  const totalIncome = totalGrossIncome - totalInvestments;
 
   const formatCurrency = (paise) => {
     return new Intl.NumberFormat('en-IN', {

@@ -20,10 +20,12 @@ export default function Dashboard() {
     const categories = storage.getCategories();
 
     // Calculate totals
-    const totalIncome = incomeData.reduce((sum, item) => sum + item.amount, 0);
+    const totalGrossIncome = incomeData.reduce((sum, item) => sum + item.amount, 0);
     const totalExpense = expenseData.reduce((sum, item) => sum + item.amount, 0);
     const totalInvest = investmentData.reduce((sum, item) => sum + item.amount, 0);
     const totalPf = incomeData.reduce((sum, item) => sum + (item.providentFund || 0), 0);
+    
+    const totalIncome = totalGrossIncome - totalInvest;
     const netSavings = totalIncome - totalExpense;
 
     setMetrics({ income: totalIncome, expense: totalExpense, savings: netSavings, invest: totalInvest, pf: totalPf });
