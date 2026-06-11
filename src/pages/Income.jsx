@@ -261,10 +261,13 @@ export default function Income() {
         </button>
       </div>
 
-      <div className="card summary-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div className="summary-label">Monthly Total (Available)</div>
-        <div className="summary-amount font-mono" style={{ marginBottom: '12px' }}>{formatCurrency(monthlyTotal)}</div>
-        <div style={{ display: 'flex', gap: '32px', fontSize: '0.9em' }}>
+      <div className="card summary-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ flex: 1 }}>
+          <div className="summary-label">Monthly Total</div>
+          <div className="summary-amount font-mono">{formatCurrency(monthlyTotal)}</div>
+        </div>
+        
+        <div style={{ flex: 1, display: 'flex', justifyContent: 'center', gap: '32px', fontSize: '0.9em' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <span style={{ color: 'var(--text-secondary)' }}>Savings Account</span>
             <span className="font-mono" style={{ color: 'var(--income-color)', fontWeight: '600' }}>{formatCurrency(savingsBalance)}</span>
@@ -274,6 +277,8 @@ export default function Income() {
             <span className="font-mono" style={{ color: 'var(--error)', fontWeight: '600' }}>{formatCurrency(expenseBalance)}</span>
           </div>
         </div>
+        
+        <div style={{ flex: 1 }}></div>
       </div>
 
       <div className="card list-card">
