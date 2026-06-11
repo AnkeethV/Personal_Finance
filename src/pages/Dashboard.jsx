@@ -8,6 +8,7 @@ import './Dashboard.css';
 export default function Dashboard() {
   const { activeMonth } = useAppContext();
   const [metrics, setMetrics] = useState({ income: 0, expense: 0, savings: 0, invest: 0, pf: 0 });
+  const [categoryBreakdown, setCategoryBreakdown] = useState([]);
   const [investmentBreakdown, setInvestmentBreakdown] = useState([]);
   const [paymentBreakdown, setPaymentBreakdown] = useState([]);
   const [accountBreakdown, setAccountBreakdown] = useState([]);
