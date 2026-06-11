@@ -8,9 +8,9 @@ import './Dashboard.css';
 export default function Dashboard() {
   const { activeMonth } = useAppContext();
   const [metrics, setMetrics] = useState({ income: 0, expense: 0, savings: 0, invest: 0, pf: 0 });
-  const [categoryBreakdown, setCategoryBreakdown] = useState([]);
   const [investmentBreakdown, setInvestmentBreakdown] = useState([]);
   const [paymentBreakdown, setPaymentBreakdown] = useState([]);
+  const [accountBreakdown, setAccountBreakdown] = useState([]);
   const [budget, setBudget] = useState(0);
 
   useEffect(() => {
@@ -77,6 +77,48 @@ export default function Dashboard() {
     const invBreakdownArray = Object.values(invBreakdown).sort((a, b) => b.amount - a.amount);
     setInvestmentBreakdown(invBreakdownArray);
 
+    // Calculate Account Breakdown
+    let totalSavingsIncome = 0;
+    let totalExpenseIncome = 0;
+    incomeData.forEach(entry => {
+      if (entry.typeId === 'inc_salary') {
+        totalSavingsIncome += (entry.savingsSplit !== undefined ? entry.savingsSplit : entry.amount);
+        totalExpenseIncome += (entry.expenseSplit || 0);
+      } else if (entry.accountTarget === 'expense') {
+        totalExpenseIncome += entry.amount;
+      } else {
+        totalSavingsIncome += entry.amount;
+      }
+    });
+
+    let totalSavingsExpenses = 0;
+    let totalExpenseExpenses = 0;
+    expenseData.forEach(entry => {
+      if (entry.accountSource === 'savings') {
+        totalSavingsExpenses += entry.amount;
+      } else {
+        totalExpenseExpenses += entry.amount;
+      }
+    });
+
+    let totalSavingsInvestments = 0;
+    let totalExpenseInvestments = 0;
+    investmentData.forEach(entry => {
+      if (entry.accountSource === 'savings') {
+        totalSavingsInvestments += entry.amount;
+      } else {
+        totalExpenseInvestments += entry.amount;
+      }
+    });
+
+    const savingsBalance = totalSavingsIncome - totalSavingsExpenses - totalSavingsInvestments;
+    const expenseBalance = totalExpenseIncome - totalExpenseExpenses - totalExpenseInvestments;
+
+    setAccountBreakdown([
+      { name: 'Savings Account', amount: savingsBalance, color: '#4CAF50' },
+      { name: 'Expense Account', amount: expenseBalance, color: '#F44336' }
+    ].sort((a, b) => b.amount - a.amount));
+
   }, [activeMonth]);
 
   const formatCurrency = (paise) => {
@@ -95,6 +137,7 @@ export default function Dashboard() {
   const maxCategoryAmount = categoryBreakdown.length > 0 ? categoryBreakdown[0].amount : 1;
   const maxInvAmount = investmentBreakdown.length > 0 ? investmentBreakdown[0].amount : 1;
   const maxPayAmount = paymentBreakdown.length > 0 ? paymentBreakdown[0].amount : 1;
+  const maxAccountAmount = accountBreakdown.length > 0 ? accountBreakdown[0].amount : 1;
 
   return (
     <div className="container dashboard-page">
@@ -239,6 +282,31 @@ export default function Dashboard() {
               })}
             </div>
           )}
+        </div>
+
+        <div className="card dashboard-chart">
+          <h2 className="font-display section-title">Account Breakdown</h2>
+          
+          <div className="chart-container">
+            {accountBreakdown.map((acc, index) => {
+              const widthPercent = Math.max((acc.amount / maxAccountAmount) * 100, 2);
+              return (
+                <div className="chart-row" key={index}>
+                  <div className="chart-label">
+                    <span className="chart-dot" style={{ backgroundColor: acc.color }}></span>
+                    <span className="chart-name">{acc.name}</span>
+                    <span className="chart-amount font-mono">{formatCurrency(acc.amount)}</span>
+                  </div>
+                  <div className="chart-bar-bg">
+                    <div 
+                      className="chart-bar-fill" 
+                      style={{ width: `${widthPercent}%`, backgroundColor: acc.color }}
+                    ></div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

@@ -89,6 +89,10 @@
   font-weight: 500;
 }
 
+.col-account {
+  flex: 1;
+}
+
 .cat-icon {
   width: 32px;
   height: 32px;
@@ -175,7 +179,7 @@
     flex: 1 1 100%;
   }
   
-  .col-date, .col-notes {
+  .col-date, .col-notes, .col-account {
     flex: 1 1 40%;
   }
   

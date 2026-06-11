@@ -283,6 +283,7 @@ export default function Income() {
           <div className="transaction-list">
             <div className="list-header">
               <div className="col-source">SOURCE</div>
+              <div className="col-account">ACCOUNT</div>
               <div className="col-date">DATE</div>
               <div className="col-notes">NOTES</div>
               <div className="col-amount">AMOUNT</div>
@@ -294,6 +295,9 @@ export default function Income() {
                 <div className="list-row" key={entry.id}>
                   <div className="col-source">
                     <span>{cat.name}</span>
+                  </div>
+                  <div className="col-account" style={{ fontSize: '13px', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    {entry.typeId === 'inc_salary' ? 'Split' : (entry.accountTarget === 'expense' ? 'Expense Acct' : 'Savings Acct')}
                   </div>
                   <div className="col-date">{new Date(entry.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}</div>
                   <div className="col-notes">

@@ -238,6 +238,7 @@ export default function Expenses() {
           <div className="transaction-list">
             <div className="list-header">
               <div className="col-source">CATEGORY</div>
+              <div className="col-account">ACCOUNT</div>
               <div className="col-date">DATE</div>
               <div className="col-notes">DETAILS</div>
               <div className="col-payment">PAYMENT</div>
@@ -250,9 +251,9 @@ export default function Expenses() {
                 <div className="list-row" key={entry.id}>
                   <div className="col-source">
                     <span>{cat.name}</span>
-                    <span style={{ display: 'block', fontSize: '10px', color: 'var(--text-secondary)', textTransform: 'uppercase', marginTop: '2px' }}>
-                      {entry.accountSource === 'savings' ? 'Savings Acct' : 'Expense Acct'}
-                    </span>
+                  </div>
+                  <div className="col-account" style={{ fontSize: '13px', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                    {entry.accountSource === 'savings' ? 'Savings Acct' : 'Expense Acct'}
                   </div>
                   <div className="col-date">{new Date(entry.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' })}</div>
                   <div className="col-notes">
