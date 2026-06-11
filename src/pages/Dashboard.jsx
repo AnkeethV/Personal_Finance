@@ -7,7 +7,7 @@ import './Dashboard.css';
 
 export default function Dashboard() {
   const { activeMonth } = useAppContext();
-  const [metrics, setMetrics] = useState({ income: 0, expense: 0, savings: 0, invest: 0, pf: 0 });
+  const [metrics, setMetrics] = useState({ income: 0, expense: 0, netWorth: 0, invest: 0, pf: 0 });
   const [categoryBreakdown, setCategoryBreakdown] = useState([]);
   const [investmentBreakdown, setInvestmentBreakdown] = useState([]);
   const [paymentBreakdown, setPaymentBreakdown] = useState([]);
@@ -26,9 +26,9 @@ export default function Dashboard() {
     const totalPf = incomeData.reduce((sum, item) => sum + (item.providentFund || 0), 0);
     
     const totalIncome = totalGrossIncome - totalInvest;
-    const netSavings = totalIncome - totalExpense;
+    const netWorth = totalGrossIncome - totalExpense + totalPf;
 
-    setMetrics({ income: totalIncome, expense: totalExpense, savings: netSavings, invest: totalInvest, pf: totalPf });
+    setMetrics({ income: totalIncome, expense: totalExpense, netWorth: netWorth, invest: totalInvest, pf: totalPf });
 
     // Calculate Category Breakdown for Expenses
     const breakdown = {};
@@ -102,10 +102,10 @@ export default function Dashboard() {
         <div className="metric-card metric-savings">
           <div className="metric-header">
             <span className="metric-icon"><TrendUp size={24} weight="duotone" /></span>
-            <span className="metric-title">Net Savings</span>
+            <span className="metric-title">Net Worth</span>
           </div>
           <div className="metric-value font-mono">
-            {metrics.savings >= 0 ? '+' : ''}{formatCurrency(metrics.savings)}
+            {metrics.netWorth >= 0 ? '+' : ''}{formatCurrency(metrics.netWorth)}
           </div>
         </div>
 

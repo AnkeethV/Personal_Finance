@@ -267,7 +267,7 @@ export default function Income() {
           <div className="summary-amount font-mono">{formatCurrency(monthlyTotal)}</div>
         </div>
         
-        <div style={{ flex: 1, display: 'flex', justifyContent: 'center', gap: '32px', fontSize: '0.9em' }}>
+        <div style={{ flex: 1, display: 'flex', justifyContent: 'center', gap: '32px', fontSize: '1.2em' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <span style={{ color: 'var(--text-secondary)' }}>Savings Account</span>
             <span className="font-mono" style={{ color: 'var(--income-color)', fontWeight: '600' }}>{formatCurrency(savingsBalance)}</span>
