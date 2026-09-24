@@ -238,7 +238,7 @@ export default function Expenses() {
             </div>
             <div className="account-stat-body">
               <span className="account-stat-amount font-mono">{formatCurrency(savingsAcctTotal)}</span>
-              <span className="account-stat-badge savings-badge font-mono">{formatPercent(savingsPct)}</span>
+              <span className="account-stat-badge savings-badge font-mono">{formatPercent(savingsAcctPct)}</span>
             </div>
           </div>
         </div>
