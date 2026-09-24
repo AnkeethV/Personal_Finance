@@ -173,6 +173,21 @@ export default function Expenses() {
 
   const totalExpense = entries.reduce((sum, entry) => sum + entry.amount, 0);
 
+  const expenseAcctTotal = entries
+    .filter(entry => entry.accountSource !== 'savings')
+    .reduce((sum, entry) => sum + entry.amount, 0);
+
+  const savingsAcctTotal = entries
+    .filter(entry => entry.accountSource === 'savings')
+    .reduce((sum, entry) => sum + entry.amount, 0);
+
+  const expenseAcctPct = totalExpense > 0 ? (expenseAcctTotal / totalExpense) * 100 : 0;
+  const savingsAcctPct = totalExpense > 0 ? (savingsAcctTotal / totalExpense) * 100 : 0;
+
+  const formatPercent = (pct) => {
+    return `${pct % 1 === 0 ? pct.toFixed(0) : pct.toFixed(1)}%`;
+  };
+
   const formatCurrency = (paise) => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
@@ -195,8 +210,38 @@ export default function Expenses() {
       </div>
 
       <div className="card summary-card expense-summary">
-        <div className="summary-label">Monthly Total</div>
-        <div className="summary-amount font-mono">{formatCurrency(totalExpense)}</div>
+        <div className="summary-main">
+          <div className="summary-label">Monthly Total</div>
+          <div className="summary-amount font-mono">{formatCurrency(totalExpense)}</div>
+        </div>
+
+        <div className="account-stat-divider summary-divider"></div>
+
+        <div className="expense-accounts-breakdown">
+          <div className="account-stat-card">
+            <div className="account-stat-header">
+              <span className="account-dot expense-dot"></span>
+              <span className="account-stat-label">Expense Account</span>
+            </div>
+            <div className="account-stat-body">
+              <span className="account-stat-amount font-mono">{formatCurrency(expenseAcctTotal)}</span>
+              <span className="account-stat-badge expense-badge font-mono">{formatPercent(expenseAcctPct)}</span>
+            </div>
+          </div>
+
+          <div className="account-stat-divider"></div>
+
+          <div className="account-stat-card">
+            <div className="account-stat-header">
+              <span className="account-dot savings-dot"></span>
+              <span className="account-stat-label">Savings Account</span>
+            </div>
+            <div className="account-stat-body">
+              <span className="account-stat-amount font-mono">{formatCurrency(savingsAcctTotal)}</span>
+              <span className="account-stat-badge savings-badge font-mono">{formatPercent(savingsPct)}</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {budget > 0 && (
