@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { storage } from '../utils/storage';
 import { evaluateMath } from '../utils/math';
 import { Plus, Trash, X, PencilSimple } from '@phosphor-icons/react';
+import PercentageStackedBar from '../components/PercentageStackedBar';
 import './Income.css';
 import './Expenses.css';
 
@@ -200,6 +201,18 @@ export default function Expenses() {
     return categories.find(c => c.id === id) || { name: 'Unknown', icon: '❓', color: '#999' };
   };
 
+  const categoryBreakdown = useMemo(() => {
+    const breakdown = {};
+    entries.forEach(item => {
+      if (!breakdown[item.typeId]) {
+        const cat = categories.find(c => c.id === item.typeId) || { name: 'Unknown', color: '#999' };
+        breakdown[item.typeId] = { name: cat.name, color: cat.color, amount: 0 };
+      }
+      breakdown[item.typeId].amount += item.amount;
+    });
+    return Object.values(breakdown).sort((a, b) => b.amount - a.amount);
+  }, [entries, categories]);
+
   return (
     <div className="container expenses-page">
       <div className="page-header">
@@ -273,6 +286,18 @@ export default function Expenses() {
               ⚠️ You have exceeded your monthly budget limit!
             </p>
           )}
+        </div>
+      )}
+
+      {categoryBreakdown.length > 0 && (
+        <div className="card expense-category-bar-card" style={{ marginBottom: '24px' }}>
+          <PercentageStackedBar
+            title="Expense Category"
+            items={categoryBreakdown}
+            formatCurrency={formatCurrency}
+            baseColor="#E8612A"
+            showLegend={false}
+          />
         </div>
       )}
 

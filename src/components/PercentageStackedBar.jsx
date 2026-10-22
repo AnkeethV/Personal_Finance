@@ -69,7 +69,8 @@ export default function PercentageStackedBar({
   emptyMessage = 'No data available this month.',
   title,
   headerAction,
-  baseColor = '#1C6B3A'
+  baseColor = '#1C6B3A',
+  showLegend = true
 }) {
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
@@ -115,12 +116,14 @@ export default function PercentageStackedBar({
   const activeSegment = hoveredIndex !== null ? segmentsWithPos[hoveredIndex] : null;
 
   return (
-    <div className="percentage-stacked-card">
+    <div className={`percentage-stacked-card ${!showLegend ? 'no-legend' : ''}`}>
       {/* Card Header: Title on left, optional action (e.g. View All) on right */}
-      <div className="stacked-card-header">
-        <h2 className="font-display section-title">{title}</h2>
-        {headerAction && <div className="header-action-wrapper">{headerAction}</div>}
-      </div>
+      {(title || headerAction) && (
+        <div className="stacked-card-header">
+          {title && <h2 className="font-display section-title">{title}</h2>}
+          {headerAction && <div className="header-action-wrapper">{headerAction}</div>}
+        </div>
+      )}
 
       {shadedItems.length === 0 ? (
         <div className="empty-chart">{emptyMessage}</div>
@@ -157,6 +160,7 @@ export default function PercentageStackedBar({
               {segmentsWithPos.map((item) => {
                 const isHovered = hoveredIndex === item.index;
                 const hasHover = hoveredIndex !== null;
+                const roundedPct = Math.round(item.pct);
 
                 return (
                   <div
@@ -172,20 +176,20 @@ export default function PercentageStackedBar({
                     onTouchStart={() => setHoveredIndex(item.index)}
                     title={`${item.name}: ${formatPercentage(item.amount)} (${formatCurrency(item.amount)})`}
                   >
-                    {/* Display percentage inside bar only if >= 4% */}
-                    {item.pct >= 4 && (
+                    {/* Display integer percentage inside bar only if >= 4% and wide enough */}
+                    {roundedPct >= 4 && (
                       <span
                         className="segment-percentage font-mono"
                         style={{
-                          fontSize: item.pct < 8 ? '10px' : '11px',
-                          padding: item.pct < 8 ? '0 1px' : '0 4px',
+                          fontSize: item.pct < 6 ? '9px' : item.pct < 9 ? '10px' : '11px',
+                          letterSpacing: item.pct < 7 ? '-0.5px' : '-0.2px',
                           color: item.isLight ? '#141412' : '#ffffff',
                           textShadow: item.isLight
                             ? '0 1px 1px rgba(255,255,255,0.7)'
                             : '0 1px 2px rgba(0,0,0,0.6)'
                         }}
                       >
-                        {formatPercentage(item.amount)}
+                        {roundedPct}%
                       </span>
                     )}
                   </div>
@@ -194,42 +198,44 @@ export default function PercentageStackedBar({
             </div>
           </div>
 
-          {/* Detailed Item Breakdown / Legend */}
-          <div className="stacked-legend-list">
-            {shadedItems.map((item, index) => {
-              const isHovered = hoveredIndex === index;
-              return (
-                <div
-                  key={index}
-                  className={`stacked-legend-row ${isHovered ? 'hovered' : ''}`}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseOver={() => setHoveredIndex(index)}
-                  onPointerEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                  onTouchStart={() => setHoveredIndex(index)}
-                >
-                  <div className="legend-row-left">
-                    <span
-                      className="legend-color-dot"
-                      style={{ backgroundColor: item.color }}
-                    />
-                    <span className="legend-item-name" title={item.name}>
-                      {item.name}
-                    </span>
-                  </div>
+          {/* Detailed Item Breakdown / Legend (optional) */}
+          {showLegend && (
+            <div className="stacked-legend-list">
+              {shadedItems.map((item, index) => {
+                const isHovered = hoveredIndex === index;
+                return (
+                  <div
+                    key={index}
+                    className={`stacked-legend-row ${isHovered ? 'hovered' : ''}`}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseOver={() => setHoveredIndex(index)}
+                    onPointerEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    onTouchStart={() => setHoveredIndex(index)}
+                  >
+                    <div className="legend-row-left">
+                      <span
+                        className="legend-color-dot"
+                        style={{ backgroundColor: item.color }}
+                      />
+                      <span className="legend-item-name" title={item.name}>
+                        {item.name}
+                      </span>
+                    </div>
 
-                  <div className="legend-row-right">
-                    <span className="legend-pct-badge font-mono">
-                      {formatPercentage(item.amount)}
-                    </span>
-                    <span className="legend-amount font-mono">
-                      {formatCurrency(item.amount)}
-                    </span>
+                    <div className="legend-row-right">
+                      <span className="legend-pct-badge font-mono">
+                        {formatPercentage(item.amount)}
+                      </span>
+                      <span className="legend-amount font-mono">
+                        {formatCurrency(item.amount)}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
     </div>
