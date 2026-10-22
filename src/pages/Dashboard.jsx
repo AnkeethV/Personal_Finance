@@ -162,7 +162,7 @@ export default function Dashboard() {
             formatCurrency={formatCurrency}
             emptyMessage="No investments logged this month."
             headerAction={<Link to="/investments" className="view-all-link">View All</Link>}
-            baseColor="#673AB7"
+            baseColor="#9C27B0"
           />
         </div>
 

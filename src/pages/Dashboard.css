@@ -33,11 +33,11 @@
 }
 
 .metric-invest {
-  border-bottom: 4px solid var(--invest-color);
+  border-bottom: 4px solid #9C27B0;
 }
 
 .metric-pf {
-  border-bottom: 4px solid #9C27B0;
+  border-bottom: 4px solid #F59E0B;
 }
 
 .metric-header {
@@ -68,13 +68,13 @@
 }
 
 .metric-invest .metric-icon {
-  color: var(--invest-color);
-  background-color: rgba(30, 79, 168, 0.1);
+  color: #9C27B0;
+  background-color: rgba(156, 39, 176, 0.1);
 }
 
 .metric-pf .metric-icon {
-  color: #9C27B0;
-  background-color: rgba(156, 39, 176, 0.1);
+  color: #D97706;
+  background-color: rgba(245, 158, 11, 0.12);
 }
 
 .metric-title {
