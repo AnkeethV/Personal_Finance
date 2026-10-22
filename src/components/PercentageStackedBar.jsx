@@ -177,13 +177,13 @@ export default function PercentageStackedBar({
                     onTouchStart={() => setHoveredIndex(item.index)}
                     title={`${item.name}: ${formatPercentage(item.amount)} (${formatCurrency(item.amount)})`}
                   >
-                    {/* Display integer percentage inside bar only if >= 4% and wide enough */}
-                    {roundedPct >= 4 && (
+                    {/* Display integer percentage inside bar only if >= 2% and wide enough */}
+                    {roundedPct >= 2 && (
                       <span
                         className="segment-percentage font-mono"
                         style={{
-                          fontSize: item.pct < 6 ? '9px' : item.pct < 9 ? '10px' : '11px',
-                          letterSpacing: item.pct < 7 ? '-0.5px' : '-0.2px',
+                          fontSize: item.pct < 4 ? '8.5px' : item.pct < 6 ? '9px' : item.pct < 9 ? '10px' : '11px',
+                          letterSpacing: item.pct < 4 ? '-0.6px' : item.pct < 7 ? '-0.5px' : '-0.2px',
                           color: '#ffffff',
                           textShadow: '0 1px 2px rgba(0,0,0,0.7)'
                         }}
