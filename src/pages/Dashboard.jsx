@@ -146,12 +146,12 @@ export default function Dashboard() {
       <div className="dashboard-grid">
         <div className="card dashboard-chart">
           <PercentageStackedBar
-            title="Category"
+            title="Expense Category"
             items={categoryBreakdown}
             formatCurrency={formatCurrency}
             emptyMessage="No expenses logged this month."
             headerAction={<Link to="/expenses" className="view-all-link">View All</Link>}
-            baseColor="#1C6B3A"
+            baseColor="#E8612A"
           />
         </div>
 
@@ -162,7 +162,7 @@ export default function Dashboard() {
             formatCurrency={formatCurrency}
             emptyMessage="No investments logged this month."
             headerAction={<Link to="/investments" className="view-all-link">View All</Link>}
-            baseColor="#1E4FA8"
+            baseColor="#673AB7"
           />
         </div>
 
@@ -172,7 +172,7 @@ export default function Dashboard() {
             items={paymentBreakdown}
             formatCurrency={formatCurrency}
             emptyMessage="No payment data this month."
-            baseColor="#673AB7"
+            baseColor="#1E4FA8"
           />
         </div>
       </div>
