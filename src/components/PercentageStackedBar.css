@@ -270,3 +270,7 @@
   border-radius: 8px;
   font-size: var(--text-sm);
 }
+
+.no-legend .empty-chart {
+  padding: 16px 20px;
+}

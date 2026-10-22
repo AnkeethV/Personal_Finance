@@ -152,6 +152,7 @@ export default function Dashboard() {
             emptyMessage="No expenses logged this month."
             headerAction={<Link to="/expenses" className="view-all-link">View All</Link>}
             baseColor="#E8612A"
+            showLegend={false}
           />
         </div>
 
@@ -163,6 +164,7 @@ export default function Dashboard() {
             emptyMessage="No investments logged this month."
             headerAction={<Link to="/investments" className="view-all-link">View All</Link>}
             baseColor="#9C27B0"
+            showLegend={false}
           />
         </div>
 
@@ -173,6 +175,7 @@ export default function Dashboard() {
             formatCurrency={formatCurrency}
             emptyMessage="No payment data this month."
             baseColor="#1E4FA8"
+            showLegend={false}
           />
         </div>
       </div>
