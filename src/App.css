@@ -8,11 +8,13 @@
   margin-left: 240px; /* Sidebar width */
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .page-content {
   flex: 1;
   padding-bottom: 32px;
+  overflow-x: auto;
 }
 
 /* Global Modal Styles */

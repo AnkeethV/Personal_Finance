@@ -1,5 +1,8 @@
 .dashboard-page {
   padding-top: 24px;
+  width: max-content;
+  min-width: 100%;
+  max-width: none;
 }
 
 .metrics-grid {
@@ -7,6 +10,7 @@
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
   margin-bottom: 24px;
+  width: 100%;
 }
 
 .metric-card {
@@ -96,6 +100,12 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 100%;
+}
+
+.dashboard-chart {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .section-title {

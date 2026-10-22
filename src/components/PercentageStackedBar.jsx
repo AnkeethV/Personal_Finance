@@ -46,9 +46,10 @@ function generateMonochromeShades(baseColorHex, count) {
     }];
   }
 
-  // Range from darkest (24% lightness) to lightest (74% lightness)
+  // Range from darkest (24% lightness) to lightest (62% lightness)
+  // Ensures white text on all slices remains high-contrast, crisp, and consistent
   const minL = 24;
-  const maxL = 74;
+  const maxL = 62;
 
   const shades = [];
   for (let i = 0; i < count; i++) {
@@ -57,7 +58,7 @@ function generateMonochromeShades(baseColorHex, count) {
     const saturation = Math.round(Math.max(38, s - t * 14));
     shades.push({
       color: `hsl(${h}, ${saturation}%, ${lightness}%)`,
-      isLight: lightness > 54
+      isLight: false
     });
   }
   return shades;
@@ -183,10 +184,8 @@ export default function PercentageStackedBar({
                         style={{
                           fontSize: item.pct < 6 ? '9px' : item.pct < 9 ? '10px' : '11px',
                           letterSpacing: item.pct < 7 ? '-0.5px' : '-0.2px',
-                          color: item.isLight ? '#141412' : '#ffffff',
-                          textShadow: item.isLight
-                            ? '0 1px 1px rgba(255,255,255,0.7)'
-                            : '0 1px 2px rgba(0,0,0,0.6)'
+                          color: '#ffffff',
+                          textShadow: '0 1px 2px rgba(0,0,0,0.7)'
                         }}
                       >
                         {roundedPct}%
