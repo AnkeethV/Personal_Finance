@@ -3,6 +3,7 @@ import { useAppContext } from '../context/AppContext';
 import { storage } from '../utils/storage';
 import { Wallet, Receipt, TrendUp, Plus, ChartLineUp, Bank } from '@phosphor-icons/react';
 import { Link } from 'react-router-dom';
+import PercentageStackedBar from '../components/PercentageStackedBar';
 import './Dashboard.css';
 
 export default function Dashboard() {
@@ -87,14 +88,6 @@ export default function Dashboard() {
     }).format(paise / 100);
   };
 
-  const getPercentage = (amount, total) => {
-    if (total === 0) return 0;
-    return Math.round((amount / total) * 100);
-  };
-
-  const maxCategoryAmount = categoryBreakdown.length > 0 ? categoryBreakdown[0].amount : 1;
-  const maxInvAmount = investmentBreakdown.length > 0 ? investmentBreakdown[0].amount : 1;
-  const maxPayAmount = paymentBreakdown.length > 0 ? paymentBreakdown[0].amount : 1;
 
   return (
     <div className="container dashboard-page">
@@ -152,93 +145,35 @@ export default function Dashboard() {
 
       <div className="dashboard-grid">
         <div className="card dashboard-chart">
-          <div className="section-header">
-            <h2 className="font-display section-title">Category Breakdown</h2>
-            <Link to="/expenses" className="view-all-link">View All</Link>
-          </div>
-          
-          {categoryBreakdown.length === 0 ? (
-            <div className="empty-chart">No expenses logged this month.</div>
-          ) : (
-            <div className="chart-container">
-              {categoryBreakdown.map((cat, index) => {
-                const widthPercent = Math.max((cat.amount / maxCategoryAmount) * 100, 2);
-                return (
-                  <div className="chart-row" key={index}>
-                    <div className="chart-label">
-                      <span className="chart-dot" style={{ backgroundColor: cat.color }}></span>
-                      <span className="chart-name">{cat.name}</span>
-                      <span className="chart-amount font-mono">{formatCurrency(cat.amount)}</span>
-                    </div>
-                    <div className="chart-bar-bg">
-                      <div 
-                        className="chart-bar-fill" 
-                        style={{ width: `${widthPercent}%`, backgroundColor: cat.color }}
-                      ></div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+          <PercentageStackedBar
+            title="Category"
+            items={categoryBreakdown}
+            formatCurrency={formatCurrency}
+            emptyMessage="No expenses logged this month."
+            headerAction={<Link to="/expenses" className="view-all-link">View All</Link>}
+            baseColor="#1C6B3A"
+          />
         </div>
 
         <div className="card dashboard-chart">
-          <h2 className="font-display section-title">Investment Breakdown</h2>
-          
-          {investmentBreakdown.length === 0 ? (
-            <div className="empty-chart">No investments logged this month.</div>
-          ) : (
-            <div className="chart-container">
-              {investmentBreakdown.map((cat, index) => {
-                const widthPercent = Math.max((cat.amount / maxInvAmount) * 100, 2);
-                return (
-                  <div className="chart-row" key={index}>
-                    <div className="chart-label">
-                      <span className="chart-dot" style={{ backgroundColor: cat.color }}></span>
-                      <span className="chart-name">{cat.name}</span>
-                      <span className="chart-amount font-mono">{formatCurrency(cat.amount)}</span>
-                    </div>
-                    <div className="chart-bar-bg">
-                      <div 
-                        className="chart-bar-fill" 
-                        style={{ width: `${widthPercent}%`, backgroundColor: cat.color }}
-                      ></div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+          <PercentageStackedBar
+            title="Investments"
+            items={investmentBreakdown}
+            formatCurrency={formatCurrency}
+            emptyMessage="No investments logged this month."
+            headerAction={<Link to="/investments" className="view-all-link">View All</Link>}
+            baseColor="#1E4FA8"
+          />
         </div>
 
         <div className="card dashboard-chart">
-          <h2 className="font-display section-title">Payment Methods</h2>
-          
-          {paymentBreakdown.length === 0 ? (
-            <div className="empty-chart">No payment data this month.</div>
-          ) : (
-            <div className="chart-container">
-              {paymentBreakdown.map((pm, index) => {
-                const widthPercent = Math.max((pm.amount / maxPayAmount) * 100, 2);
-                return (
-                  <div className="chart-row" key={index}>
-                    <div className="chart-label">
-                      <span className="chart-dot" style={{ backgroundColor: pm.color }}></span>
-                      <span className="chart-name">{pm.name}</span>
-                      <span className="chart-amount font-mono">{formatCurrency(pm.amount)}</span>
-                    </div>
-                    <div className="chart-bar-bg">
-                      <div 
-                        className="chart-bar-fill" 
-                        style={{ width: `${widthPercent}%`, backgroundColor: pm.color }}
-                      ></div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+          <PercentageStackedBar
+            title="Payment Methods"
+            items={paymentBreakdown}
+            formatCurrency={formatCurrency}
+            emptyMessage="No payment data this month."
+            baseColor="#673AB7"
+          />
         </div>
       </div>
     </div>
