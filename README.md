@@ -1,16 +1,36 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Project Background
 
-Currently, two official plugins are available:
+Tracking the flow of money was one thing which I was unable to do it accurately. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Used to add the expenses into an application which gave clarity of categories the expenses were made but had no insights on investments, payment methods and which categories were spending more etc.
 
-## React Compiler
+# Implementation Plan
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- The website front-end: HTML, CSS, and JavaScript, the building blocks.
 
-## Expanding the ESLint configuration
+- Dashboard: Main KPIs: Networth, Total Income, Total Expenses, Investments, Provident Fund (Salaried Personnel Only). Along with Bar Chart of Expense, Investments and Payment Methods breakdown.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Income Tab: Shows the total inflow of money monthly from Expense and Savings Account.
+
+- Expense Tab: Shows the total outflow of money monthly from Expense and Savings Account across different categories, categories being customisable. 
+
+- Investments Tab: Shows the total outflow of money monthly.
+
+- Tax Tab: Auto-calculates the tax based on the inputs from all the above tabs.
+
+- Settings Tab: Update Name, Monthly budget, Tax regime selection, Backup and Import data.
+
+# Process
+
+- Generated Product requirement document (PRD) using Chat GPT by explaining the implementation plan, uploaded the PRD document to Antigravity IDE developer tool.
+
+- Broke down the PRD to multiple atomic phases so that each phase can be tested. 
+
+- Implemented each phase, fixed the issues and improved the interface of the website.
+
+# Output
+
+Created a website where the data does not leave your browser. Tracks the inflow and outflow of the money monthly with consolidated Dashboard which provides the main insights of expenses, income and investments.
+
+![Image](blob/main/Screenshot%202026-10-23%20204400.png)
