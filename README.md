@@ -33,4 +33,5 @@ Used to add the expenses into an application which gave clarity of categories th
 
 Created a website where the data does not leave your browser. Tracks the inflow and outflow of the money monthly with consolidated Dashboard which provides the main insights of expenses, income and investments.
 
-![Image](blob/main/Screenshot%202026-10-23%20204400.png)
+![Image](https://github.com/AnkeethV/Personal_Finance/blob/main/Screenshot%202026-10-23%20204400.png)
+
